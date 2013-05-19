@@ -195,6 +195,8 @@ func encTimestamp(v interface{}) (driver.Value, error) {
 	case time.Time:
 		x = x.In(time.UTC)
 		millis = x.UnixNano() / 1000000
+	case int64:
+		millis = x
 	default:
 		return nil, fmt.Errorf("can not convert %T to a timestamp", x)
 	}
