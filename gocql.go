@@ -346,6 +346,14 @@ func parseMeta(body []byte) ([]string, []uint16, int) {
 		i += 2 + l
 		meta[c] = binary.BigEndian.Uint16(body[i:])
 		i += 2
+		if meta[c] == 0 {
+			l := int(binary.BigEndian.Uint16(body[i:]))
+			v := string(body[i+2 : i+2+l])
+			i += 2 + l
+			if v == "org.apache.cassandra.db.marshal.DateType" {
+				meta[c] = typeTimestamp
+			}
+		}
 	}
 	return columns, meta, i
 }
